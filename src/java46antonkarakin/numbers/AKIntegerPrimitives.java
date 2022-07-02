@@ -22,7 +22,7 @@ public class AKIntegerPrimitives {
 			tempCounter = (byte) (tempCounter * 2);
 			res++;
 		}
-		return (res + 1)/8;
+		return (res + 1) / 8;
 	}
 
 	/* ------------------short------------------ */
@@ -46,8 +46,9 @@ public class AKIntegerPrimitives {
 			tempCounter = (short) (tempCounter * 2);
 			res++;
 		}
-		return (res + 1)/8;
+		return (res + 1) / 8;
 	}
+
 	/* ------------------int------------------ */
 
 	public static int getMaxInt() {
@@ -55,6 +56,7 @@ public class AKIntegerPrimitives {
 		while (res > 0) {
 			res = res * 2;
 		}
+		System.out.println("intRES " + (res - 1));
 		return res - 1;
 	}
 
@@ -69,7 +71,7 @@ public class AKIntegerPrimitives {
 			tempCounter = tempCounter * 2;
 			res++;
 		}
-		return (res + 1)/8;
+		return (res + 1) / 8;
 	}
 
 	/* ------------------long------------------ */
@@ -93,7 +95,7 @@ public class AKIntegerPrimitives {
 			tempCounter = tempCounter * 2;
 			res++;
 		}
-		return (res + 1)/8;
+		return (res + 1) / 8;
 	}
 
 	/* ------------------char------------------ */
@@ -116,7 +118,9 @@ public class AKIntegerPrimitives {
 			tempCounter = (char) (tempCounter * 2);
 			res++;
 		}
-		return (res + 1)/8;
+		return (res + 1) / 8;
 	}
+
+	/* ------------------getLengthOfAll------------------ */
 
 }
