@@ -15,14 +15,19 @@ public class AKIntegerPrimitives {
 		return (byte) (getMaxByte() + 1);
 	}
 
-	public static int getLengthByte() {
-		int res = 0;
-		byte tempCounter = 1;
-		while (tempCounter > 0) {
-			tempCounter = (byte) (tempCounter * 2);
-			res++;
-		}
-		return (res + 1) / 8;
+//	public static int getLengthByte() {
+//		int res = 0;
+//		byte tempCounter = 1;
+//		while (tempCounter > 0) {
+//			tempCounter = (byte) (tempCounter * 2);
+//			res++;
+//		}
+//		return (res + 1) / 8;
+//	}
+	
+	public static long getLengthByte() {
+		long maxValue = getMaxByte();
+		return getLength(maxValue);
 	}
 
 	/* ------------------short------------------ */
@@ -39,14 +44,19 @@ public class AKIntegerPrimitives {
 		return (short) (getMaxShort() + 1);
 	}
 
-	public static int getLengthShort() {
-		int res = 0;
-		short tempCounter = 1;
-		while (tempCounter > 0) {
-			tempCounter = (short) (tempCounter * 2);
-			res++;
-		}
-		return (res + 1) / 8;
+//	public static int getLengthShort() {
+//		int res = 0;
+//		short tempCounter = 1;
+//		while (tempCounter > 0) {
+//			tempCounter = (short) (tempCounter * 2);
+//			res++;
+//		}
+//		return (res + 1) / 8;
+//	}
+	
+	public static long getLengthShort() {
+		long maxValue = getMaxShort();
+		return getLength(maxValue);
 	}
 
 	/* ------------------int------------------ */
@@ -56,7 +66,6 @@ public class AKIntegerPrimitives {
 		while (res > 0) {
 			res = res * 2;
 		}
-		System.out.println("intRES " + (res - 1));
 		return res - 1;
 	}
 
@@ -64,14 +73,19 @@ public class AKIntegerPrimitives {
 		return getMaxInt() + 1;
 	}
 
-	public static int getLengthInt() {
-		int res = 0;
-		int tempCounter = 1;
-		while (tempCounter > 0) {
-			tempCounter = tempCounter * 2;
-			res++;
-		}
-		return (res + 1) / 8;
+//	public static int getLengthInt() {
+//		int res = 0;
+//		int tempCounter = 1;
+//		while (tempCounter > 0) {
+//			tempCounter = tempCounter * 2;
+//			res++;
+//		}
+//		return (res + 1) / 8;
+//	}
+	
+	public static long getLengthInt() {
+		long maxValue = getMaxInt();
+		return getLength(maxValue);
 	}
 
 	/* ------------------long------------------ */
@@ -88,14 +102,19 @@ public class AKIntegerPrimitives {
 		return getMaxLong() + 1;
 	}
 
-	public static Integer getLengthLong() {
-		int res = 0;
-		long tempCounter = 1;
-		while (tempCounter > 0) {
-			tempCounter = tempCounter * 2;
-			res++;
-		}
-		return (res + 1) / 8;
+//	public static Integer getLengthLong() {
+//		int res = 0;
+//		long tempCounter = 1;
+//		while (tempCounter > 0) {
+//			tempCounter = tempCounter * 2;
+//			res++;
+//		}
+//		return (res + 1) / 8;
+//	}
+	
+	public static long getLengthLong() {
+		long maxValue = getMaxLong();
+		return getLength(maxValue);
 	}
 
 	/* ------------------char------------------ */
@@ -111,16 +130,24 @@ public class AKIntegerPrimitives {
 		return (char) (getMaxChar() + 1);
 	}
 
-	public static Integer getLengthChar() {
-		int res = 0;
-		char tempCounter = 1;
-		while (tempCounter > 0) {
-			tempCounter = (char) (tempCounter * 2);
-			res++;
-		}
-		return (res + 1) / 8;
+//	public static Integer getLengthChar() {
+//		int res = 0;
+//		char tempCounter = 1;
+//		while (tempCounter > 0) {
+//			tempCounter = (char) (tempCounter * 2);
+//			res++;
+//		}
+//		return (res + 1) / 8;
+//	}
+	public static long getLengthChar() {
+		long maxValue = getMaxChar();
+		return getLength(maxValue);
 	}
 
-	/* ------------------getLengthOfAll------------------ */
+	/* ------------------getLengthOfAnyTypes------------------ */
 
+	public static long getLength(long maxValue) {
+		int log = (int) ((Math.log(maxValue) +1)/ Math.log(2));
+		return (int)(log/8);
+	}
 }
