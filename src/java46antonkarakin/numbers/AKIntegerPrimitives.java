@@ -2,7 +2,7 @@ package java46antonkarakin.numbers;
 
 public class AKIntegerPrimitives {
 
-	/* ------------------byte------------------ */
+	/* -------------------byte------------------ */
 	public static byte getMaxByte() {
 		byte res = 1;
 		while (res > 0) {
