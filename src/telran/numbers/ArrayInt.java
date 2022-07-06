@@ -64,28 +64,26 @@ public class ArrayInt {
 	}
 
 	public static void sort(int[] ar) {
+		int[] tempArr = Arrays.copyOf(ar, ar.length); 
+		int arrayLength = ar.length;
 		for (int i = 0; i < ar.length; i++) {
-			moveMaxToEnd(ar);
+			moveMaxToEnd(ar, arrayLength);
+			arrayLength -= 1;
+			if (Arrays.equals(tempArr, ar)) {
+				break;
+			}
 		}
-		// TODO
-		// Improve algorithm with a proper moveMaxToEnd method call
 
 	}
 
-	private static void moveMaxToEnd(int[] ar) {
-		for (int i = 1; i < ar.length; i++) {
+	private static void moveMaxToEnd(int[] ar, int arrayLength) {
+		for (int i = 1; i < ar.length && i != arrayLength; i++) {
 			if (ar[i - 1] > ar[i]) {
 				swap(ar, i);
+				if (ar[i - 1] < ar[i]) {
+				}
 			}
 		}
-		// TODO
-		// Improve algorithm of moveMaxToEnd:
-		// (1) no compare of elements that already exist on the proper places
-		// (think of additional parameter of the method with code update)
-		// (2) terminate algorithm once an array is already sorted (think of returning
-		// some
-		// value with code update)
-
 	}
 
 	private static void swap(int[] ar, int index) {
@@ -118,7 +116,7 @@ public class ArrayInt {
 			middle = (left + right) / 2;
 		}
 		int temp = left > right ? -1 : middle;
-		/*----------------------looking for the 1st index of founded number----------------------------------------- */
+		/*----------------------looking for the 1st index----------------------------------------------------------- */
 
 		if (temp != -1) {
 			res = indexOf(ar, number);
@@ -126,7 +124,7 @@ public class ArrayInt {
 			res = temp;
 		}
 
-		/*----------------------looking for bogeyman--------------------------------------------------------------- */
+		/*----------------------if number doesn't exist in the given array ------------------------------------------ */
 		if (temp == -1) {
 			res = (left + 1) * -1;
 		}
