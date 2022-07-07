@@ -121,16 +121,23 @@ public class ArrayInt {
 		/*----------------------looking for the 1st index----------------------------------------------------------- */
 
 		if (temp != -1) {
-			res = indexOf(ar, number);
+			res = getFirstIndex(ar, temp, number);
 		} else {
 			res = temp;
 		}
 
 		/*----------------------if number doesn't exist in the given array ------------------------------------------ */
 		if (temp == -1) {
-			res = (left + 1) * -1;
+			res = -(left + 1);
 		}
 
 		return res;
+	}
+
+	private static int getFirstIndex(int[] ar, int temp, int number) {
+		while (temp >= 0 && ar[temp] == number) {
+			temp--;
+		}
+		return temp + 1;
 	}
 }
