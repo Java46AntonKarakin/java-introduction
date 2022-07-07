@@ -64,26 +64,28 @@ public class ArrayInt {
 	}
 
 	public static void sort(int[] ar) {
-		int[] tempArr = Arrays.copyOf(ar, ar.length); 
+		boolean isSorted;
 		int arrayLength = ar.length;
 		for (int i = 0; i < ar.length; i++) {
-			moveMaxToEnd(ar, arrayLength);
+			isSorted = moveMaxToEnd(ar, arrayLength);
 			arrayLength -= 1;
-			if (Arrays.equals(tempArr, ar)) {
+			if (isSorted == true) {
 				break;
 			}
 		}
 
 	}
 
-	private static void moveMaxToEnd(int[] ar, int arrayLength) {
+	private static boolean moveMaxToEnd(int[] ar, int arrayLength) {
+		boolean isSorted = true;
 		for (int i = 1; i < ar.length && i != arrayLength; i++) {
 			if (ar[i - 1] > ar[i]) {
 				swap(ar, i);
-				if (ar[i - 1] < ar[i]) {
-				}
+				isSorted = false;
 			}
 		}
+
+		return isSorted;
 	}
 
 	private static void swap(int[] ar, int index) {

@@ -11,7 +11,7 @@ import telran.numbers.ArrayInt;
 class ArrayIntTests {
 
 	private static final int SMALL_N_NUMBERS = 100;
-	private static final int LARGE_N_NUMBERS = 1_000_000;
+	private static final int LARGE_N_NUMBERS = 1_000_00;
 	private static final int N_RUNS = 10000;
 	@Test
 	void referenceTests() {
@@ -62,7 +62,7 @@ class ArrayIntTests {
 	void sortLargeTest() {
 		int ar[] = new int[LARGE_N_NUMBERS];
 		fillRandomNumbers(ar);
-		Arrays.sort(ar); //sorting with O[N*LogN]
+//		Arrays.sort(ar); //sorting with O[N*LogN]
 		ArrayInt.sort(ar);// bubble sorting with optimization of the HW #4
 		runSortTest(ar);
 	}
@@ -79,6 +79,8 @@ class ArrayIntTests {
 		assertEquals(-7, ArrayInt.binaryIndexOf(ar, 600));
 		int ar1[] = {1,1,1,1,1};
 		assertEquals(0, ArrayInt.binaryIndexOf(ar1, 1));
+		assertEquals(-6, ArrayInt.binaryIndexOf(ar1, 2));
+		assertEquals(-1, ArrayInt.binaryIndexOf(ar1, 0));
 		
 		
 	}
