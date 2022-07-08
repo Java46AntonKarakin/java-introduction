@@ -11,6 +11,8 @@ public class TictactoeTest {
 	@Test
 	public void testTictactoeMove() {
 
+
+		
 		// place 'x' to [0][0] to wins --> diag
 		char[][] matrix1 = { { 0, 0, 0 },{ 0, 'x', 0 },{ 0, 0, 'x' } };
 
@@ -25,8 +27,11 @@ public class TictactoeTest {
 
 		// game is not complete
 		char[][] matrix5 = { { 0, 0, 0 },{ 0, 0, 0 },{ 0, 0, 0 } };
+		
+		// place 'x' to [1][0] to game is not complete 
+		char[][] matrix6 = { { 0, 0, 0 },{ 0, 'x', 0 },{ 0, 0, 'x' } };
 
-		int gameNotOver = 0;
+		int gameIsNotComplete = 0;
 		int smbWins = 1;
 		int draw = 2;
 
@@ -34,7 +39,8 @@ public class TictactoeTest {
 		assertEquals(smbWins, TictactoeGame.tictactoeMove(matrix2, 0, 0, 'x'));
 		assertEquals(smbWins, TictactoeGame.tictactoeMove(matrix3, 0, 0, 'x'));
 		assertEquals(draw, TictactoeGame.tictactoeMove(matrix4, 0, 0, 'x'));
-		assertEquals(gameNotOver, TictactoeGame.tictactoeMove(matrix5, 0, 0, 'x'));
+		assertEquals(gameIsNotComplete, TictactoeGame.tictactoeMove(matrix5, 0, 0, 'x'));
+		assertEquals(gameIsNotComplete, TictactoeGame.tictactoeMove(matrix6, 1, 0, 'x'));
 
 	}
 

@@ -2,10 +2,24 @@ package telran.numbers;
 
 public class TictactoeGame {
 	public static void main(String[] args) {
+
 		// place 'x' to [0][0] to win --> diag
+		char[][] matrix1 = { { 0, 0, 0 },{ 0, 'x', 0 },{ 0, 0, 'x' } };
+
+		// place 'x' to [0][0] to win --> row
 		char[][] matrix2 = { { 0, 'x', 'x' },{ 0, 0, 0 },{ 0, 0, 0 } };
+
+		// place 'x' to [0][0] to win --> column
+		char[][] matrix3 = { { 0, 0, 0 },{ 'x', 0, 0 },{ 'x', 0, 0 } };
+
+		// place 'x' to [0][0] to draw
+		char[][] matrix4 = { { 0, 'x', 'o' },{ 'o', 'x', 'x' },{ 'x', 'o', 'o' } };
+
+		// game is not complete
+		char[][] matrix5 = { { 0, 0, 0 },{ 0, 0, 0 },{ 0, 0, 0 } };
 		
-		System.out.println(tictactoeMove(matrix2, 0, 0, 'x'));
+		System.out.println(tictactoeMove(matrix3, 0, 0, 'x'));
+
 
 	}
 
@@ -34,64 +48,89 @@ public class TictactoeGame {
 //
 //		return res;
 		
-		return isDraw(matrix)? 2 :  isWin(matrix)? 1 : 0;
+		return isDraw(matrix)? 2 :  isWin(matrix,symb)? 1 : 0;
 	}
 
 	
-	private static boolean isWin(char[][] matrix) {
+	private static boolean isWin(char[][] matrix, char symb) {
 		boolean checkResult = false;
+		int side = matrix.length;
 
-		int height = matrix.length;
-		int length = matrix[0].length;
-			
-		for (int col = 0; col < length; col++) {
-			for (int row = 0; row < length; row++) {
+		OUTTERFOR: for (int col = 0; col < side; col++) {
+			for (int row = 0; row < side; row++) {
 
-				char checkX = 'x';
-				char checkO = 'o';
-				if (row <= length - 2) {
-					if (checkRow(matrix, row, col, checkX)) {
-						checkResult = true;
-						break;
+				if (symb == 'x') {
+					if (row <= side - 3 && matrix[col][row] == symb) {
+						if (checkRow(matrix, col, row, 'x')) {
+							checkResult = true;
+							break OUTTERFOR;
+						}
 					}
-					if (checkResult = checkRow(matrix, row, col, checkO)==true) {
-						break;
+					if (col <= side - 3 && matrix[col][row] == symb) {
+						if (checkColumn(matrix, col, row, 'x')) {
+							checkResult = true;
+							break OUTTERFOR;
+						}
+						;
+					}
+//					if (col <= side - 3) {
+//						if (row <= side - 3) {
+//							if (matrix[col][row] == symb) {
+//								if (checkDiagDown(matrix, col, row, 'x')) {
+//									checkResult = true;
+//									break OUTTERFOR;
+//								}
+//							}
+//						}
+//					}
+						
+					
+					if (col <= side - 3 && row <= side - 3 && matrix[col][row] == symb) {
+						if (checkDiagDown(matrix, col, row, 'x')) {
+							checkResult = true;
+							break OUTTERFOR;
+						}
+					}
+					if (col >= 2 && row <= side - 3 && matrix[col][row] == symb) {
+						if (checkDiagUp(matrix, col, row, 'x')) {
+							checkResult = true;
+							break OUTTERFOR;
+						}
 					}
 				}
-				if (col <= height - 2) {
-					if (checkColumn(matrix, row, col, checkX)) {
-						checkResult = true;
-						break;
-					};
-					if (checkColumn(matrix, row, col, checkO)) {
-						checkResult = true;
-						break;
-					};
-				}
-				if (row <= length - 2 && col <= height - 2) {
-					if (checkDiagDown(matrix, row, col, checkX)) {
-						checkResult = true;
-						break;
+
+				if (symb == 'o') {
+					if (row <= side - 3 && matrix[col][row] == symb) {
+						if (checkRow(matrix, col, row, 'o')) {
+							break OUTTERFOR;
+						}
 					}
-					if (checkDiagDown(matrix, row, col, checkO)) {
-						checkResult = true;
-						break;
+					if (col <= side - 3 && matrix[col][row] == symb) {
+
+						if (checkColumn(matrix, col, row, 'o')) {
+							checkResult = true;
+							break OUTTERFOR;
+						}
+						;
 					}
-				}
-				if (row <= length - 2 && col >= height + 2) {
-					if (checkDiagUp(matrix, row, col, checkX)) {
-						checkResult = true;
-						break;
+					if (col >= side - 3 && row <= side - 3 && matrix[col][row] == symb) {
+						if (checkDiagDown(matrix, col, row, 'o')) {
+							checkResult = true;
+							break OUTTERFOR;
+						}
 					}
-					if (checkDiagUp(matrix, row, col, checkO)) {
-						checkResult = true;
-						break;
+					if (col >= 2 && row <= side - 3 && matrix[col][row] == symb) {
+						if (checkDiagUp(matrix, col, row, 'o')) {
+							checkResult = true;
+							break OUTTERFOR;
+						}
 					}
 				}
 			}
-		}			
-	return checkResult;
+		}
+		return checkResult;
 	}
+	
 	private static boolean isDraw(char matrix[][]) {
 		boolean checkResult = true;
 		for (int i = 0; i < matrix.length; i++) {
@@ -103,7 +142,8 @@ public class TictactoeGame {
 		}
 		return checkResult;
 	}
-	private static boolean checkDiagDown(char[][] matrix , int row, int col, char checkWith) {
+	
+	private static boolean checkDiagDown(char[][] matrix , int col,  int row,char checkWith) {
 		boolean gotIt = false;
 		if (matrix[col+1][row+1] == checkWith) {
 			if (matrix[col+2][row+2] == checkWith) {
@@ -112,16 +152,16 @@ public class TictactoeGame {
 		}
 		return gotIt;
 	}
-	private static boolean checkDiagUp(char[][] matrix , int row, int col, char checkWith) {
+	private static boolean checkDiagUp(char[][] matrix ,int col, int row,  char checkWith) {
 		boolean gotIt = false;
-		if (matrix[col-1][row-1] == checkWith) {
-			if (matrix[col-2][row-2] == checkWith) {
+		if (matrix[col-1][row+1] == checkWith) {
+			if (matrix[col-2][row+2] == checkWith) {
 				gotIt = true;
 			}
 		}
 		return gotIt;
 	}
-	private static boolean checkColumn(char[][] matrix , int row, int col, char checkWith) {
+	private static boolean checkColumn(char[][] matrix , int col, int row, char checkWith) {
 		boolean gotIt = false;
 		if (matrix[col+1][row] == checkWith) {
 			if (matrix[col+2][row] == checkWith) {
@@ -130,7 +170,7 @@ public class TictactoeGame {
 		}
 		return gotIt;
 	}
-	private static boolean checkRow(char[][] matrix , int row, int col, char checkWith) {
+	private static boolean checkRow(char[][] matrix ,int col,  int row, char checkWith) {
 		boolean gotIt = false;
 		if (matrix[col][row+1] == checkWith) {
 			if (matrix[col][row+2] == checkWith) {
@@ -139,9 +179,9 @@ public class TictactoeGame {
 		}
 		return gotIt;
 	}
-	private static char[][] placeSymbol(char matrix[][], int nRow, int nCol, char symb) {
+	private static char[][] placeSymbol(char matrix[][], int Col, int Row, char symb) {
 
-		matrix[nCol][nRow] = symb;
+		matrix[Col][Row] = symb;
 
 		return matrix;
 
