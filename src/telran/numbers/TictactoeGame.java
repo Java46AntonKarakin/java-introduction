@@ -23,30 +23,21 @@ public class TictactoeGame {
 	
 	
 	public static int tictactoeMove(char matrix[][], int nRow, int nCol, char symb) {
-		int res = 0;
 
 		matrix = placeSymbol(matrix, nRow, nCol, symb);
-		if ( isDraw(matrix) == true) {
-			return 2;
-		}
-		if ( isWin(matrix) == true) {
-			return 1;
-		}
-
-		return res;
+//		if ( isDraw(matrix)) {
+//			return 2;
+//		}
+//		if ( isWin(matrix)) {
+//			return 1;
+//		}
+//
+//		return res;
+		
+		return isDraw(matrix)? 2 :  isWin(matrix)? 1 : 0;
 	}
 
-	private static boolean isDraw(char matrix[][]) {
-		boolean checkResult = true;
-		for (int i = 0; i < matrix.length; i++) {
-			for (int j = 0; j < matrix.length; j++) { 
-				if (matrix[j][i]==0) {
-					checkResult = false;
-				}
-			}
-		}
-		return checkResult;
-	}
+	
 	private static boolean isWin(char[][] matrix) {
 		boolean checkResult = false;
 
@@ -100,6 +91,17 @@ public class TictactoeGame {
 			}
 		}			
 	return checkResult;
+	}
+	private static boolean isDraw(char matrix[][]) {
+		boolean checkResult = true;
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix.length; j++) { 
+				if (matrix[j][i]==0) {
+					checkResult = false;
+				}
+			}
+		}
+		return checkResult;
 	}
 	private static boolean checkDiagDown(char[][] matrix , int row, int col, char checkWith) {
 		boolean gotIt = false;
