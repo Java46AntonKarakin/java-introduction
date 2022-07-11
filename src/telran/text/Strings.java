@@ -1,6 +1,6 @@
 package telran.text;
 
-import java.util.Arrays;
+import java.util.Arrays; // its needed for the second implementation of the method "isAnagram"
 
 public class Strings {
 	/**
@@ -12,54 +12,46 @@ public class Strings {
 	 *         the str2 that exist in str1 at different indexes
 	 */
 
+	/*
+	 * I wrote this method before looking HW's reviews and it seems to be O[N]. 
+	 * Is it correct?
+	 */
+
 	public static int[] deepNoRepeatedCompare(String str1, String str2) {
 		int[] res = { 0, 0 };
-		if (str1.length() <= str2.length()) {
-			for (int i = 0; i < str1.length(); i++) {
-				if (str1.charAt(i) == str2.charAt(i)) {
-					res[0]++;
-					continue;
-				}
-				if (str1.indexOf(str2.charAt(i)) > -1) {
-					res[1]++;
-				}
-			}
-		}
-		if (str1.length() > str2.length()) {
-			for (int i = 0; i < str2.length(); i++) {
-				char str1Char = str1.charAt(i);
-				char str2Char = str2.charAt(i);
-				if (str1Char == str2Char) {
-					res[0]++;
-					continue;
-				}
-				if (str1.indexOf(str2Char) > -1) {
-					res[1]++;
-				}
-			}
-		}
+		int smallestArrayLength = (str1.length() <= str2.length()) ? str1.length() : str2.length();
 
+		for (int i = 0; i < smallestArrayLength; i++) {
+			if (str1.charAt(i) == str2.charAt(i)) {
+				res[0]++;
+				continue;
+			}
+			if (str1.indexOf(str2.charAt(i)) > -1) {
+				res[1]++;
+			}
+		}
 		return res;
 	}
 
+	/*------------------------O[N^2] as is-------------------------------*/
+
 //	public static int[] deepNoRepeatedCompare(String str1, String str2) {
-//		int[] res = {0, 0};
-//		
-//		char[] charArray1 = str1.toCharArray();
-//		char[] charArray2 = str2.toCharArray();
 //
-//		for (int i = 0; i < charArray1.length; i++) {
-//			for (int j = 0; j < charArray2.length; j++) {
-//				if (charArray1[i] == charArray2[j]) {
+//		int[] res = { 0, 0 };
+//		int str1Length = str1.length();
+//		int str2Length = str2.length();
+//
+//		for (int i = 0; i < str1Length; i++) {
+//			for (int j = 0; j < str2Length; j++) {
+//				if (str1.charAt(i) == str2.charAt(j)) {
 //					if (i == j) {
-//						res [0]++;
+//						res[0]++;
 //					} else {
-//						res [1]++;
+//						res[1]++;
 //					}
 //				}
 //			}
 //		}
-// 		
 //		return res;
 //	}
 
@@ -70,35 +62,73 @@ public class Strings {
 	 * @return true if : (1) str2 has the same as str1 length (2) str2 comprises of
 	 *         all letters from str1
 	 */
-	
-	
+
+	/*
+	 * method is written after analyzing HW reviews
+	 */
+
 	public static boolean isAnagram(String str1, String str2) {
-		boolean res = false;
-		// 1) is the length equal? if TRUE - continue
-		if (isLengthEqual(str1, str2)==false) {
-			return res;
-		}
-		
-/*---------2) str1 & str2 to sorted arrays of symbols---------*/
-		char [] arrSorted1 = convertToSorted(str1);
-		char [] arrSorted2 = convertToSorted(str2);
-/*---------3) compare str1Convrted and str2Convrted---------*/
-		res = Arrays.equals(arrSorted1, arrSorted2);
-		
-		return res;
+
+		return checkQuantity(str1, str2) ? (checkQuality(str1, str2) ? true : false) : false;
 	}
 
-	private static char [] convertToSorted(String str) {
-		char [] res = str.toCharArray();
-		Arrays.sort(res);
-		return res;
-	}
-
-	private static boolean isLengthEqual(String str1, String str2) {
-		boolean res = true;
+	private static boolean checkQuantity(String str1, String str2) {
 		if (str1.length() != str2.length()) {
-			res = false;
+			return false;
 		}
-		return res;
+		return true;
 	}
+
+	private static boolean checkQuality(String str1, String str2) {
+		int[] matchResultArr = new int[26];
+		str1 = str1.toLowerCase();
+		str2 = str2.toLowerCase();
+		for (int i = 0; i < str1.length(); i++) {
+			matchResultArr[str1.charAt(i) - 'a']++;
+			matchResultArr[str2.charAt(i) - 'a']--;
+		}
+		return (checkEquality(matchResultArr)) ? true : false;
+	}
+
+	private static boolean checkEquality(int[] matchingArr) {
+		for (int i = 0; i < matchingArr.length; i++) {
+			if (matchingArr[i] != 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/*
+	 * My original O[N^2] solution. Unfortunately i didn't know about look-up tables.
+	 */
+
+//	public static boolean isAnagram(String str1, String str2) {
+//		boolean res = false;
+//		
+//		if (isLengthEqual(str1, str2) == false) {
+//			return res;
+//		}
+//		
+//		char[] arrSorted1 = convertToSorted(str1);
+//		char[] arrSorted2 = convertToSorted(str2);
+//		
+//		res = Arrays.equals(arrSorted1, arrSorted2);
+//		
+//		return res;
+//	}
+//
+//	private static char[] convertToSorted(String str) {
+//		char[] res = str.toCharArray();
+//		Arrays.sort(res);
+//		return res;
+//	}
+//
+//	private static boolean isLengthEqual(String str1, String str2) {
+//		boolean res = true;
+//		if (str1.length() != str2.length()) {
+//			res = false;
+//		}
+//		return res;
+//	}
 }
