@@ -1,22 +1,129 @@
 package telran.text;
 
-import java.util.Arrays; // its needed for the second implementation of the method "isAnagram"
-
 public class Strings {
+	static public String join(String[] array, String delimiter) {
+		// STring "+" operator based solution
+		return stringPluseSolution(array, delimiter);
+		// StringBuilder attend based solution
+		// return stringBuilderSolution(array, delimiter);
+	}
+
+	static private String stringBuilderSolution(String[] array, String delimiter) {
+		StringBuilder strBuilder = new StringBuilder(array[0]);
+		for (int i = 1; i < array.length; i++) {
+			strBuilder.append(delimiter).append(array[i]);
+		}
+		return strBuilder.toString();
+	}
+
+	static private String stringPluseSolution(String[] array, String delimiter) {
+		String res = array[0]; // assumption: there is at least one string
+		for (int i = 1; i < array.length; i++) {
+			res += delimiter + array[i];
+		}
+		return res;
+	}
+
 	/**
 	 * 
-	 * @param str1 ascii string with no repeated symbols
-	 * @param str2 ascii string with no repeated symbols
-	 * @return array with two numbers first - number of the symbols of the str2 that
-	 *         exist in str1 at the same indexes second - number of the symbols of
-	 *         the str2 that exist in str1 at different indexes
+	 * @param name1 - first name
+	 * @param name2 - second name
+	 * @return either "match" or "no match" in accordance to the comments (see TODO)
 	 */
+	public static String matches(String name1, String name2) {
 
-	/*
-	 * I wrote this method before looking HW's reviews and it seems to be O[N]. 
-	 * Is it correct?
+		name1 = name1.trim().toUpperCase();
+		name2 = name2.trim().toUpperCase();
+
+		if (name1.equals(name2)) {
+			return "match";
+		}
+		String[] arrName1 = name1.split(" ");
+		String[] arrName2 = name2.split(" ");
+
+		if (arrName1.length == arrName2.length) {
+
+			int positionOfAbbr = isAbbreviation(arrName1);
+
+			if (positionOfAbbr >= 0) {
+				if (isAbbrMatch(arrName1, arrName2, positionOfAbbr)) {
+					return "match";
+				}
+				return "no match";
+			}
+		}
+		if (arrName1.length > arrName2.length) {
+			if (isSecondEqualsThird(arrName1, arrName2)) {
+				return "match";
+			}
+		}
+		return "no match";
+	}
+
+	private static boolean isSecondEqualsThird(String[] arrName1, String[] arrName2) {
+		for (int i = 0; i < arrName1.length - 1; i++) {
+			if (arrName1[i].equals(arrName2[0])) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean isAbbrMatch(String[] arrName1, String[] arrName2, int positionOfAbbr) {
+		for (int i = 0; i < arrName2.length; i++) {
+			if (arrName2[i].startsWith(arrName1[positionOfAbbr])) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static int isAbbreviation(String[] arrName1) {
+		int res = -1;
+		for (int i = 0; i < arrName1.length; i++) {
+			if (arrName1[i].length() == 1) {
+				res = i;
+			}
+		}
+		return res;
+	}
+
+	/**
+	 * sorts array of strings
+	 * 
+	 * @param strNumbers array of strings containing the positive integer numbers
+	 *                   length of each string can not be more than three symbols
+	 *                   String containing "123" should be greater than string
+	 *                   containing "23" as the number 123 greater than number 23
 	 */
+	static public String[] sortStringsAsNumbers(String[] strNumbers) {
+		int[] countArr = new int[1000];
+		int temp = 0;
 
+		for (int i = 0; i < strNumbers.length; i++) {
+			countArr[Integer.valueOf(strNumbers[i])]++;
+		}
+
+		for (int i = 0; i < countArr.length; i++) {
+			if (countArr[i] > 0) {
+				for (int j = 0; j < countArr[i]; j++) {
+					strNumbers[temp] = String.valueOf(i);
+					temp++;
+				}
+			}
+		}
+		return strNumbers;
+	}
+	
+	public static String[] randomArr(int max) {
+		String[] ar = new String[max];
+		for (int i = 0; i < ar.length; i++) {
+			ar[i] = String.valueOf((int) (1 + Math.random() * (max - 0 + 1)));
+		}
+		return ar;
+	}
+
+	/*----------old stuff below---------- */
 	public static int[] deepNoRepeatedCompare(String str1, String str2) {
 		int[] res = { 0, 0 };
 		int smallestArrayLength = (str1.length() <= str2.length()) ? str1.length() : str2.length();
@@ -33,39 +140,25 @@ public class Strings {
 		return res;
 	}
 
-	/*------------------------O[N^2] as is-------------------------------*/
+	public static int[] deepNoRepeatedCompareOld(String str1, String str2) {
 
-//	public static int[] deepNoRepeatedCompare(String str1, String str2) {
-//
-//		int[] res = { 0, 0 };
-//		int str1Length = str1.length();
-//		int str2Length = str2.length();
-//
-//		for (int i = 0; i < str1Length; i++) {
-//			for (int j = 0; j < str2Length; j++) {
-//				if (str1.charAt(i) == str2.charAt(j)) {
-//					if (i == j) {
-//						res[0]++;
-//					} else {
-//						res[1]++;
-//					}
-//				}
-//			}
-//		}
-//		return res;
-//	}
+		int[] res = { 0, 0 };
+		int str1Length = str1.length();
+		int str2Length = str2.length();
 
-	/**
-	 * 
-	 * @param str1 English letters (may have repeats)
-	 * @param str2 English letters (may have repeats)
-	 * @return true if : (1) str2 has the same as str1 length (2) str2 comprises of
-	 *         all letters from str1
-	 */
-
-	/*
-	 * method is written after analyzing HW reviews
-	 */
+		for (int i = 0; i < str1Length; i++) {
+			for (int j = 0; j < str2Length; j++) {
+				if (str1.charAt(i) == str2.charAt(j)) {
+					if (i == j) {
+						res[0]++;
+					} else {
+						res[1]++;
+					}
+				}
+			}
+		}
+		return res;
+	}
 
 	public static boolean isAnagram(String str1, String str2) {
 
@@ -98,37 +191,4 @@ public class Strings {
 		}
 		return true;
 	}
-
-	/*
-	 * My original O[N^2] solution. Unfortunately i didn't know about look-up tables.
-	 */
-
-//	public static boolean isAnagram(String str1, String str2) {
-//		boolean res = false;
-//		
-//		if (isLengthEqual(str1, str2) == false) {
-//			return res;
-//		}
-//		
-//		char[] arrSorted1 = convertToSorted(str1);
-//		char[] arrSorted2 = convertToSorted(str2);
-//		
-//		res = Arrays.equals(arrSorted1, arrSorted2);
-//		
-//		return res;
-//	}
-//
-//	private static char[] convertToSorted(String str) {
-//		char[] res = str.toCharArray();
-//		Arrays.sort(res);
-//		return res;
-//	}
-//
-//	private static boolean isLengthEqual(String str1, String str2) {
-//		boolean res = true;
-//		if (str1.length() != str2.length()) {
-//			res = false;
-//		}
-//		return res;
-//	}
 }
