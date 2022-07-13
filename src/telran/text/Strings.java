@@ -74,7 +74,8 @@ public class Strings {
 		int temp = 0;
 
 		for (int i = 0; i < strNumbers.length; i++) {
-			lut[Integer.valueOf(strNumbers[i])]++;
+			lut[Integer.valueOf(strNumbers[i])]++; 	// in case if numbering of document
+													//is wrong - i sent question is about this line
 		}
 
 		for (int i = 0; i < lut.length; i++) {
@@ -85,7 +86,7 @@ public class Strings {
 				}
 			}
 		}
-		
+
 	}
 
 	// methods for creating array [0...999] for additional test---------------
