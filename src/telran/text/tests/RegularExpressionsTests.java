@@ -9,36 +9,40 @@ import static telran.text.Strings.*;
 class RegularExpressionsTests {
 
 	@Test
-	void isArithmeticExpressionTestTrue () {
-		
-		String exp1 = "(12+__)";
-		String exp2 = "(12+34)*__+(c/de-f)";
-		String exp3 = "1+__";
+	void isArithmeticExpressionTestTrue() {
 
-	
-	assertTrue(isArithmeticExpression(exp1));
-	assertTrue(isArithmeticExpression(exp2));
-	assertTrue(isArithmeticExpression(exp3));
-	
-	
+//		expression[0] = "(12+__)";
+//		expression[1] = "(12+34)*__+(c/de-f)";
+//		expression[2] = "1+__";
+//		expression[3] = "((12+__))";
+
+		String[] expression = { "(12+__)", "(12+34)*__+(c/de-f)", "1+__", "((12+__))" };
+
+		for (int i = 0; i < expression.length; i++) {
+			assertTrue(isArithmeticExpression(expression[i]));
+		}
+
 	}
-	void isArithmeticExpressionTestFalse () {
-		
-		String exp1 = ")12+34)*abc/de-f";
-		String exp2 = "(12+34)*abc/de-f)";
-		String exp3 = "(12+3-(-4)*abc/de-f)";
-		String exp4 = "(12+34)*ab(c/de-f_)";
-		String exp5 = "(12+34)*ab(c/de-+f)";
-		String exp6 = "123+";
-		String exp7 = "f";
-		
-		assertFalse(isArithmeticExpression(exp1));
-		assertFalse(isArithmeticExpression(exp2));
-		assertFalse(isArithmeticExpression(exp3));
-		assertFalse(isArithmeticExpression(exp4));
-		assertFalse(isArithmeticExpression(exp5));
-		assertFalse(isArithmeticExpression(exp6));
-		assertFalse(isArithmeticExpression(exp7));
+
+	void isArithmeticExpressionTestFalse() {
+
+//		expression[0] = ")12+34)*abc/de-f";
+//		expression[1] = "(12+34)*abc/de-f)";
+//		expression[2] = "(12+3-(-4)*abc/de-f)";
+//		expression[3] = "(12+34)*ab(c/de-f_)";
+//		expression[4] = "(12+34)*ab(c/de-+f)";
+//		expression[5] = "123+";
+//		expression[6] = "f";
+//		expression[7] = "(12+34))";
+//		expression[8] = "()";
+
+		String[] expression = { ")12+34)*abc/de-f", "(12+34)*abc/de-f)", "(12+3-(-4)*abc/de-f)", "(12+34)*ab(c/de-f_)",
+				"(12+34)*ab(c/de-+f)", "123+", "f", "(12+34))", "()" };
+
+		for (int i = 0; i < expression.length; i++) {
+			assertFalse(isArithmeticExpression(expression[i]));
+		}
+
 	}
 
 }
