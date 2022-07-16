@@ -9,23 +9,36 @@ import static telran.text.Strings.*;
 class RegularExpressionsTests {
 
 	@Test
-	void isArithmeticExpressionTest () {
-		String exp1 = "(12+34)*ab(c/de-f)";
-		String exp2 = ")12+34)*abc/de-f";
-		String exp3 = "(12++34)*abc/de-f";
-		String exp4 = "(12+3-(-4)*abc/de-f)";
-		String exp5 = "_(12+34)*ab(c/de-f)";
-		String exp6 = "11";
-		String exp7 = "1+1";
+	void isArithmeticExpressionTestTrue () {
+		
+		String exp1 = "(12+__)";
+		String exp2 = "(12+34)*__+(c/de-f)";
+		String exp3 = "1+__";
 
 	
 	assertTrue(isArithmeticExpression(exp1));
-	assertFalse(isArithmeticExpression(exp2));
-	assertFalse(isArithmeticExpression(exp3));
-	assertFalse(isArithmeticExpression(exp4));
-	assertFalse(isArithmeticExpression(exp5));
-	assertFalse(isArithmeticExpression(exp6));
-	assertTrue(isArithmeticExpression(exp7));
+	assertTrue(isArithmeticExpression(exp2));
+	assertTrue(isArithmeticExpression(exp3));
+	
+	
+	}
+	void isArithmeticExpressionTestFalse () {
+		
+		String exp1 = ")12+34)*abc/de-f";
+		String exp2 = "(12+34)*abc/de-f)";
+		String exp3 = "(12+3-(-4)*abc/de-f)";
+		String exp4 = "(12+34)*ab(c/de-f_)";
+		String exp5 = "(12+34)*ab(c/de-+f)";
+		String exp6 = "123+";
+		String exp7 = "f";
+		
+		assertFalse(isArithmeticExpression(exp1));
+		assertFalse(isArithmeticExpression(exp2));
+		assertFalse(isArithmeticExpression(exp3));
+		assertFalse(isArithmeticExpression(exp4));
+		assertFalse(isArithmeticExpression(exp5));
+		assertFalse(isArithmeticExpression(exp6));
+		assertFalse(isArithmeticExpression(exp7));
 	}
 
 }

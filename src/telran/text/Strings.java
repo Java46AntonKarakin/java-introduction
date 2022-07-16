@@ -1,19 +1,12 @@
 package telran.text;
 
-import java.util.regex.Pattern;
-
 public class Strings {
-
-	public static String javaVariableRegex() {
-		return "[a-zA-Z$][\\w$]*|_[\\w$]+";
-	}
 
 	public static boolean isArithmeticExpression(String expression) {
 		if (!checkParentheses(expression)) {
 			return false;
 		}
-		expression = removeSpacesAndParentheses(expression);
-		return expression.matches(arithmeticExpression(expression));
+		return removeSpacesAndParentheses(expression).matches(arithmeticExpression(expression));
 	}
 
 	/**
@@ -25,21 +18,22 @@ public class Strings {
 	 *         considered a + ((10) * 2) => a+10*2 a + ((10) * )2 => a+10*2
 	 *         according to assumption a + (-10 * 2) => wrong [\\w] [+/*-]
 	 * 
-	 * 
 	 */
 	public static String arithmeticExpression(String expression) {
-		StringBuilder baseEx = new StringBuilder ("[A-Za-z0-9]+");
-		StringBuilder addEx = new StringBuilder ("[+/*-]{1}[A-Za-z0-9]+");
 		boolean crutch = true;
-		
+
+		StringBuilder regExpForCorrectVar = new StringBuilder("([A-Za-z0-9]+\\.[A-Za-z0-9]+|[A-Za-z0-9]+|__+)");
+		StringBuilder addExpForActPlusVar = new StringBuilder(
+				"([+/*-]{1}(([A-Za-z0-9]+\\.[A-Za-z0-9]+)|([A-Za-z0-9]+)|__+))");
+		String regExMathSymbol = "[*/+-]";
+
 		for (int i = 0; i < expression.length(); i++) {
-			if (expression.charAt(i) == '+' || expression.charAt(i) == '-' || expression.charAt(i) == '/'
-					|| expression.charAt(i) == '*') {
-				baseEx.append(addEx);
+			if (Character.toString(expression.charAt(i)).matches(regExMathSymbol)) {
+				regExpForCorrectVar.append(addExpForActPlusVar);
 				crutch = false;
 			}
 		}
-		return crutch?"":baseEx.toString();
+		return crutch ? "" : regExpForCorrectVar.toString();
 	}
 
 	/**
@@ -48,8 +42,9 @@ public class Strings {
 	 */
 	private static String removeSpacesAndParentheses(String expression) {
 		StringBuilder sb1 = new StringBuilder();
+		String regExMathSymbol = "[() ]";
 		for (int i = 0; i < expression.length(); i++) {
-			if (expression.charAt(i) != '(' && expression.charAt(i) != ')' && expression.charAt(i) != ' ') {
+			if (!Character.toString(expression.charAt(i)).matches(regExMathSymbol)) {
 				sb1.append(expression.charAt(i));
 			}
 		}
@@ -62,21 +57,36 @@ public class Strings {
 	 * @return true if for each '(' there is ')' examples: (ab)(dg(g)) - true
 	 *         (ab))((cd) - false
 	 */
-
 	private static boolean checkParentheses(String expression) {
+		String mathSymbolsAndBrackets = "[+/*-]";
+		String regExpBeginWithBrOpen = "(\\()*[0-9]+\\.[0-9]+|(\\()*[A-Za-z0-9]+|(\\()*__+";
+		String regExpBeginWithBrClose = "[0-9]+\\.[0-9]+(\\))*|[A-Za-z0-9]+(\\))*|__+(\\))*";
+		String regExpNoBrackets = "[0-9]+\\.[0-9]+|[A-Za-z0-9]+|__+";
+		String[] ExpStrArr = expression.split(mathSymbolsAndBrackets);
 		int bracketsRatio = 0;
-		for (int i = 0; i < expression.length(); i++) {
-			if (expression.charAt(i) == '(') {
-				bracketsRatio++;
-			}
-			if (expression.charAt(i) == ')') {
-				bracketsRatio--;
-			}
-			if (bracketsRatio < 0) {
-				return false;
+
+		for (int i = 0; i < ExpStrArr.length; i++) {
+
+			if (ExpStrArr[i].contains(")") || ExpStrArr[i].contains("(")) {
+
+				if (ExpStrArr[i].startsWith(")")) {
+					return false;
+				}
+				if (ExpStrArr[i].endsWith("(")) {
+					return false;
+				}
+				if (ExpStrArr[i].startsWith("(") && ExpStrArr[i].matches(regExpBeginWithBrOpen)) {
+					bracketsRatio++;
+				}
+				if (ExpStrArr[i].endsWith(")") && ExpStrArr[i].matches(regExpBeginWithBrClose)) {
+					bracketsRatio--;
+				}
+			} else {
+				if (!ExpStrArr[i].matches(regExpNoBrackets)) {
+					return false;
+				}
 			}
 		}
 		return bracketsRatio == 0 ? true : false;
 	}
-
 }
