@@ -1,9 +1,11 @@
 package telran.text;
 
 public class Strings {
-	
+
 	static final String MATH_SYMBOLS_REGEX = "([+/*-]{1})";
 	static final String VAR_NAME_REGEX = "([A-Za-z\\d$]+\\.[A-Za-z\\d]+|[_A-Za-z\\d]+|__+)";
+	static final String OPEN_BRACKETS = "((\\()+)";
+	static final String CLOSED_BRACKETS = "((\\))+)";
 
 	public static boolean isArithmeticExpression(String expression) {
 		if (!checkParentheses(expression)) {
@@ -28,10 +30,10 @@ public class Strings {
 		expression = expression.replaceAll("[()\\s]", "");
 		return expression;
 	}
- 
+
 	private static boolean checkParentheses(String expression) {
-		String regExpBeginWithBrOpen = "(\\()+[\\d]+\\.[\\d]+|(\\()+[A-Za-z\\d]+|(\\()+__+";
-		String regExpBeginWithBrClose = "[\\d]+\\.[\\d]+(\\))+|[A-Za-z\\d]+(\\))+|__+(\\))+";
+		String regExpBeginWithBrOpen = OPEN_BRACKETS + VAR_NAME_REGEX;
+		String regExpEndsWithBrClose = VAR_NAME_REGEX + CLOSED_BRACKETS;
 		String[] ExpStrArr = expression.split(MATH_SYMBOLS_REGEX);
 		int bracketsRatio = 0;
 
@@ -52,7 +54,7 @@ public class Strings {
 						}
 					}
 				}
-				if (ExpStrArr[i].endsWith(")") && ExpStrArr[i].matches(regExpBeginWithBrClose)) {
+				if (ExpStrArr[i].endsWith(")") && ExpStrArr[i].matches(regExpEndsWithBrClose)) {
 					for (int j = 0; j < ExpStrArr[i].length(); j++) {
 						if (ExpStrArr[i].charAt(j) == ')') {
 							bracketsRatio--;
