@@ -2,7 +2,7 @@ package telran.text;
 
 public class Strings {
 	
-	static final String MATH_SYMBOLS_REGEX = "[+/*-]";
+	static final String MATH_SYMBOLS_REGEX = "([+/*-]{1})";
 	static final String VAR_NAME_REGEX = "([A-Za-z\\d$]+\\.[A-Za-z\\d]+|[_A-Za-z\\d]+|__+)";
 
 	public static boolean isArithmeticExpression(String expression) {
@@ -14,15 +14,10 @@ public class Strings {
 
 	public static String arithmeticExpression(String expression) {
 		boolean crutch = true;
-
 		StringBuilder regExpForCorrectVar = new StringBuilder(VAR_NAME_REGEX);
-		StringBuilder actionPlusVaraible = new StringBuilder(
-				"([+/*-]{1}(([A-Za-z\\d]+\\.[A-Za-z\\d]+)|([A-Za-z\\d]+)|__+))");
-		String regExMathSymbol = "[*/+-]";
-
 		for (int i = 0; i < expression.length(); i++) {
-			if (Character.toString(expression.charAt(i)).matches(regExMathSymbol)) {
-				regExpForCorrectVar.append(actionPlusVaraible);
+			if (Character.toString(expression.charAt(i)).matches(MATH_SYMBOLS_REGEX)) {
+				regExpForCorrectVar.append(MATH_SYMBOLS_REGEX).append(VAR_NAME_REGEX);
 				crutch = false;
 			}
 		}
